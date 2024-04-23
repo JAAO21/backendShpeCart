@@ -47,7 +47,7 @@ router.get('/products/:id', getProductById);
  *       '500':
  *         description: Error interno del servidor
  */
-router.post('/products/:id', createProduct);
+router.post('/products', createProduct);
 
 //Ruta para actualizar producto
 /**

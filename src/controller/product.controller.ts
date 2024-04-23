@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import ProductModel  from "../models/produtc.model"; // Importa el modelo de Producto
+import ProductModel from "../models/produtc.model"; // Importa el modelo de Producto
 
 // Controlador para obtener todos los productos
 export const getAllProducts = async (
@@ -8,8 +8,15 @@ export const getAllProducts = async (
 ): Promise<void> => {
   try {
     const response = await ProductModel.find();
-    res.status(200).json(response);
-  } catch (error:any) {
+    if (response.length>0) {
+      res.status(200).json(response);
+      return;
+     
+    }else{
+      res.status(400).send("No hay productos");
+      return;
+    }
+  } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 };
@@ -26,7 +33,7 @@ export const getProductById = async (
       return;
     }
     res.status(200).json(response);
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 };
@@ -39,7 +46,7 @@ export const createProduct = async (
     const response = new ProductModel(req.body);
     await response.save();
     res.status(200).send("Producto creado");
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 };
@@ -57,7 +64,7 @@ export const deleteProductById = async (
     } else {
       res.status(404).send("Producto no encontrado");
     }
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 };
@@ -65,6 +72,7 @@ export const updateProductById = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+  console.log(  req.params.id)
   try {
     const response = await ProductModel.findByIdAndUpdate(
       req.params.id,
@@ -75,7 +83,7 @@ export const updateProductById = async (
     } else {
       res.status(404).send("Producto no encontrado");
     }
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 };

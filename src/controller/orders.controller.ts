@@ -7,7 +7,7 @@ export const getAllOrders = async (
 ): Promise<void> => {
   try {
     const orders: Order[] = await OrderModel.find();
-    res.status(200).send("orden creada");
+    res.status(200).json(orders);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
